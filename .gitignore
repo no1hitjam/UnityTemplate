@@ -1,0 +1,7 @@
+.vs/*
+Temp/*
+ProjectSettings/*
+Library/*
+Assets/Scripts/JTest/*
+*.sln
+*.csproj*
