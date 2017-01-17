@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public static class JGet
+public static class JColorExtensions
 {
-    public static Sprite Sprite(string group, string name)
-    {
-        return null;
-    }
-
-    public static Font Font(string name)
-    {
-        return null;
-    }
-
-    public static Color Color(string hex)
+    public static Color Init(this Color color, string hex)
     {
         if (hex.Length == 3) {
             hex += hex;
@@ -29,7 +18,7 @@ public static class JGet
                 vals[i] /= 16 * 16;
             }
         }
-        return new Color(vals[0], vals[1], vals[2], vals[3]);
+        color = new Color(vals[0], vals[1], vals[2], vals[3]);
+        return color;
     }
 }
-

@@ -9,6 +9,15 @@ public static class JLib
     // -- enums --
     public enum Axis { X, Y, Z }
 
+    // -- JBehaviour --
+
+    public static T New<T>(string name = "New GameObject") 
+        where T : MonoBehaviour
+    {
+        var component = new GameObject().AddComponent<T>();
+        component.Add<JName>().SetBaseName(name);
+        return component;
+    }
 
     // -- iteration --
 
@@ -16,6 +25,13 @@ public static class JLib
     {
         for (int i = 0; i < iterations; i++) {
             action(i);
+        }
+    }
+
+    public static void For(int iterations, UnityAction action)
+    {
+        for (int i = 0; i < iterations; i++) {
+            action();
         }
     }
 
@@ -139,53 +155,8 @@ public static class JLib
         return render;
     }
 
-    public enum FitMode { StretchX, ShrinkX, StretchY, ShrinkY }
+    
 
-    public static Text NewText(
-        Transform parent,
-        string text = "",
-        float width = 400,
-        float height = 200,
-        int font_size = 100,
-        string font = "Arial",
-        TextAnchor alignment = TextAnchor.MiddleCenter,
-        Color? color = null,
-        FitMode? fit = null)
-    {
-        var new_text = new GameObject().AddComponent<Text>();
-        new_text.transform.SetParent(parent, false);
-
-        new_text.text = text;
-        new_text.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
-        new_text.fontSize = font_size;
-        new_text.font = JGet.Font(font);
-        new_text.alignment = alignment;
-
-        if (color.HasValue)
-            new_text.color = color.Value;
-
-        if (fit.HasValue) {
-            var fitter = new_text.gameObject.AddComponent<ContentSizeFitter>();
-            if (fit.Value == FitMode.ShrinkX || fit.Value == FitMode.StretchX) {
-                fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-                if (fit.Value == FitMode.ShrinkX) {
-                    var shrinker = new_text.gameObject.AddComponent<JRectShrinker>();
-                    shrinker.max_size = width;
-                    shrinker.axis = Axis.X;
-                }
-            } else if (fit.Value == FitMode.ShrinkY || fit.Value == FitMode.StretchY) {
-                fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-                if (fit.Value == FitMode.ShrinkY) {
-                    var shrinker = new_text.gameObject.AddComponent<JRectShrinker>();
-                    shrinker.max_size = height;
-                    shrinker.axis = Axis.Y;
-                }
-            }
-        }
-
-        new_text.gameObject.AddComponent<JRender>();
-
-        return new_text;
-    }
+    
 }
 

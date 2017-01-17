@@ -8,38 +8,29 @@ public class JRender : JBehaviour
     public JList<Sprite> sprites;
     private int sprite_index = -1;
 
-    public Vector3 Pos()
+    public void SetScale(int x, int y, int z)
     {
-        return transform.localPosition;
+        SetScale((v) => new Vector3(x, y, z));
+    }
+
+    public void SetScale(Func<Vector3,Vector3> newScale)
+    {
+        transform.localScale = newScale(transform.localScale);
     }
 
     public void SetPos(int x, int y, int z)
     {
-        SetPos(new Vector3(x, y, z));
+        SetPos((v) => new Vector3(x, y, z));
     }
 
-    public void SetPos(Vector3 new_pos)
+    public void SetPos(Func<Vector3, Vector3> newPos)
     {
-        transform.localPosition = new_pos;
-    }
-
-    public void SetPos(Func<Vector3, Vector3> new_pos)
-    {
-        transform.localPosition = new_pos(transform.localPosition);
+        transform.localPosition = newPos(transform.localPosition);
     }
 
     void Update()
     {
-        transform.localScale = Vector3.one;
-        JLib.For(scales.Values, (int i, Vector3 scale) =>
-        {
-            transform.localScale = JLib.Scale(transform.localScale, scale);
-        });
-        transform.localPosition = Vector3.one;
-        JLib.For(scales.Values, (int i, Vector3 scale) =>
-        {
-            transform.localScale = JLib.Scale(transform.localScale, scale);
-        });
+        
     }
 
     public Sprite sprite
