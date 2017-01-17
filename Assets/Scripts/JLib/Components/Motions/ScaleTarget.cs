@@ -2,11 +2,9 @@
 
 public class ScaleTarget : VectorTarget
 {
-    public virtual ScaleTarget Init(Vector3 target, float speed)
+    public virtual ScaleTarget Init(Vector3 target, float speed, Vector3? axes = null, bool eased = true, float drift = 0)
     {
-        this._setVector = this.SetScale;
-        this.Target = target;
-        this.Speed = speed;
+        base.Init(this.GetScale, this.SetScale, target, speed, axes, eased, drift);
         return this;
     }
 

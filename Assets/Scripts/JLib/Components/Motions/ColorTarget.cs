@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class ColorTarget : MonoBehaviour
+public class ColorTarget : Motion
 {
     private UnityAction<Color> _setColor;
     public ColorTarget Init(Color target, float speed)
@@ -19,5 +19,12 @@ public class ColorTarget : MonoBehaviour
         }
 
         return this;
+    }
+
+    void Update()
+    {
+        if (ActiveFrame) {
+
+        }
     }
 }

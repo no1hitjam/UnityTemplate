@@ -57,16 +57,12 @@ public static class JRenderExtensions
             if (fit.Value == JLib.TextFitMode.ShrinkX || fit.Value == JLib.TextFitMode.StretchX) {
                 fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
                 if (fit.Value == JLib.TextFitMode.ShrinkX) {
-                    var shrinker = text.gameObject.AddComponent<RectShrinker>();
-                    shrinker.max_size = width;
-                    shrinker.axis = JLib.Axis.X;
+                    text.Add<RectShrinker>().Init(width, JLib.Axes(true, false, false));
                 }
             } else if (fit.Value == JLib.TextFitMode.ShrinkY || fit.Value == JLib.TextFitMode.StretchY) {
                 fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
                 if (fit.Value == JLib.TextFitMode.ShrinkY) {
-                    var shrinker = text.gameObject.AddComponent<RectShrinker>();
-                    shrinker.max_size = height;
-                    shrinker.axis = JLib.Axis.Y;
+                    text.Add<RectShrinker>().Init(width, JLib.Axes(true, false, false));
                 }
             }
         } else {

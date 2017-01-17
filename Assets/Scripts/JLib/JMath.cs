@@ -1,6 +1,11 @@
 ﻿
 public static class JMath
 {
+    public static bool True(this float f)
+    {
+        return f != 0;
+    }
+
     public static int Mod(int n, int mod)
     {
         while (n < 0)

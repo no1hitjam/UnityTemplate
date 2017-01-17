@@ -3,11 +3,18 @@ using UnityEngine;
 
 public class PosTarget : VectorTarget
 {
-    public virtual PosTarget Init(Vector3 target, float speed, bool proportional = false, bool local = true)
+    public virtual PosTarget Init(Vector3 target, float speed, bool proportional = false, bool local = true, 
+        Vector3? axes = null, bool eased = true, float drift = 0)
     {
-        this._setVector = (Vector3 v) => { this.SetPos(v, proportional, local); };
-        this.Target = target;
-        this.Speed = speed;
+        base.Init(
+            () => this.GetPos(proportional, local),
+            (v) => this.SetPos(v, proportional, local),
+            target,
+            speed,
+            axes,
+            eased,
+            drift);
+
         return this;
     }
 
