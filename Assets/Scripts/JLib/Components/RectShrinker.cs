@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
 [DisallowMultipleComponent]
-public class JRectShrinker : MonoBehaviour
+public class RectShrinker : MonoBehaviour
 {
     public float max_size;
     public JLib.Axis axis;
@@ -13,10 +13,9 @@ public class JRectShrinker : MonoBehaviour
     void Start()
     {
         // multiply by changed size proportion and divide by old
-        _changeSize = new JQueuePair<float>(
+        _changeSize = new JQueuePair<float>(1, 
             (mult) => this.SetScale((v) => { return v.SetAxis(axis, (f) => { return mult * f; }); }),
-            (mult) => this.SetScale((v) => { return v.SetAxis(axis, (f) => { return mult / f; }); }),
-            1);
+            (mult) => this.SetScale((v) => { return v.SetAxis(axis, (f) => { return mult / f; }); }));
     }
 
     void Update()

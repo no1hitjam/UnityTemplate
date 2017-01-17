@@ -9,36 +9,36 @@ public class JRoll<T> : List<T>
     public int Offset
     {
         get { return _offset; }
-        set { _offset = JLib.Mod(value, Count); }
+        set { _offset = JMath.Mod(value, Count); }
     }
 
     public new T this[int index]
     {
         get
         {
-            return this[JLib.Mod(index + _offset, Count)];
+            return this[JMath.Mod(index + _offset, Count)];
         }
 
         set
         {
-            this[JLib.Mod(index + _offset, Count)] = value;
+            this[JMath.Mod(index + _offset, Count)] = value;
         }
     }
 
 
     public new int IndexOf(T item)
     {
-        return JLib.Mod(this.IndexOf(item) - _offset, Count);
+        return JMath.Mod(this.IndexOf(item) - _offset, Count);
     }
 
     public new void Insert(int index, T item)
     {
-        this.Insert(JLib.Mod(index + _offset, Count), item);
+        this.Insert(JMath.Mod(index + _offset, Count), item);
     }
 
     public new void RemoveAt(int index)
     {
-        this.RemoveAt(JLib.Mod(index + _offset, Count));
+        this.RemoveAt(JMath.Mod(index + _offset, Count));
     }
 }
 

@@ -4,30 +4,30 @@ using System.Collections.Generic;
 
 public class JQueuePair<T>
 {
-    private T current;
-    private T last;
+    private T _current;
+    private T _last;
 
     private Action<T> Do;
     private Action<T> Undo;
 
-    public JQueuePair(Action<T> Do, Action<T> Undo, T last)
+    public JQueuePair(T first, Action<T> Do, Action<T> Undo)
     {
         this.Do = Do;
         this.Undo = Undo;
-        this.current = last;
-        this.last = last;
+        _current = first;
+        _last = first;
     }
 
     public void Add(T item)
     {
-        if (item.Equals(current)) {
+        if (item.Equals(_current)) {
             return;
         }
-        Undo(last);
+        Undo(_last);
         Do(item);
 
-        last = current;
-        current = item;
+        _last = _current;
+        _current = item;
     }
 }
 

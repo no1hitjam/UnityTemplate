@@ -3,6 +3,18 @@ using UnityEngine;
 
 public static class JVectorExtensions
 {
+    public static Vector3 JScale(this Vector3 v, Vector3 scale)
+    {
+        v.Scale(scale);
+        return v;
+    }
+
+    public static Vector2 JScale(this Vector2 v, Vector2 scale)
+    {
+        v.Scale(scale);
+        return v;
+    }
+
     public static float GetAxis(this Vector3 vector, JLib.Axis axis)
     {
         if (axis == JLib.Axis.X) {

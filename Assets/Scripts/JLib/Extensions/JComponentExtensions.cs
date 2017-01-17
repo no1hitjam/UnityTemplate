@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class JComponentExtensions
 {
-    // II. Components
+    
     public static T Add<T>(this Component component)
         where T : MonoBehaviour
     {

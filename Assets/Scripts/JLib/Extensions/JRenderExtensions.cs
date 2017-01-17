@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
-public static class JUIExtensions
+public static class JRenderExtensions
 {
-    public enum TextFitMode { StretchX, ShrinkX, StretchY, ShrinkY }
 
     public static Vector2 GetPivot(this MaskableGraphic graphic)
     {
@@ -35,7 +35,7 @@ public static class JUIExtensions
         string font = "Arial",
         Color? color = null,
         TextAnchor alignment = TextAnchor.MiddleCenter,
-        TextFitMode? fit = null)
+        JLib.TextFitMode? fit = null)
     {
         text = new GameObject().AddComponent<Text>();
         text.transform.SetParent(parent, false);
@@ -43,7 +43,7 @@ public static class JUIExtensions
         text.text = content;
         text.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
         text.fontSize = font_size;
-        text.font = JGet.Font(font);
+        //text.font = Font(font);
         text.alignment = alignment;
 
         if (color.HasValue) {
@@ -54,24 +54,24 @@ public static class JUIExtensions
 
         if (fit.HasValue) {
             var fitter = text.gameObject.AddComponent<ContentSizeFitter>();
-            if (fit.Value == TextFitMode.ShrinkX || fit.Value == TextFitMode.StretchX) {
+            if (fit.Value == JLib.TextFitMode.ShrinkX || fit.Value == JLib.TextFitMode.StretchX) {
                 fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-                if (fit.Value == TextFitMode.ShrinkX) {
-                    var shrinker = text.gameObject.AddComponent<JRectShrinker>();
+                if (fit.Value == JLib.TextFitMode.ShrinkX) {
+                    var shrinker = text.gameObject.AddComponent<RectShrinker>();
                     shrinker.max_size = width;
                     shrinker.axis = JLib.Axis.X;
                 }
-            } else if (fit.Value == TextFitMode.ShrinkY || fit.Value == TextFitMode.StretchY) {
+            } else if (fit.Value == JLib.TextFitMode.ShrinkY || fit.Value == JLib.TextFitMode.StretchY) {
                 fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-                if (fit.Value == TextFitMode.ShrinkY) {
-                    var shrinker = text.gameObject.AddComponent<JRectShrinker>();
+                if (fit.Value == JLib.TextFitMode.ShrinkY) {
+                    var shrinker = text.gameObject.AddComponent<RectShrinker>();
                     shrinker.max_size = height;
                     shrinker.axis = JLib.Axis.Y;
                 }
             }
         } else {
             UnityEngine.Object.Destroy(text.Get<ContentSizeFitter>());
-            UnityEngine.Object.Destroy(text.Get<JRectShrinker>());
+            UnityEngine.Object.Destroy(text.Get<RectShrinker>());
         }
 
         return text;
@@ -83,20 +83,48 @@ public static class JUIExtensions
         Transform parent, 
         Sprite sprite = null, 
         Color? color = null,
-        Vector2? size = null, 
+        Vector2 size = default(Vector2), 
         Vector2 pivot = default(Vector2))
     {
         image.transform.SetParent(parent, false);
         image.sprite = sprite;
         if (color.HasValue) {
             image.color = color.Value;
+        } else {
+            image.color = Color.white;
         }
-        if (size.HasValue) {
-            image.SetSize(size.Value);
-        }
+        image.SetSize(size);
         image.SetPivot(pivot);
 
         return image;
+    }
+
+    public static Animation AddAnimation(this Image image, List<Sprite> sprites)
+    {
+        return image.Add<Animation>().Init((s) => { image.sprite = s; }, sprites);
+    }
+
+
+    public static SpriteRenderer Init(
+        this SpriteRenderer spriteRenderer,
+        Transform parent,
+        Sprite sprite = null,
+        Color? color = null)
+    {
+        spriteRenderer.transform.SetParent(parent, false);
+        spriteRenderer.sprite = sprite;
+        if (color.HasValue) {
+            spriteRenderer.color = color.Value;
+        } else {
+            spriteRenderer.color = Color.white;
+        }
+
+        return spriteRenderer;
+    }
+
+    public static Animation AddAnimation(this SpriteRenderer spriteRenderer, List<Sprite> sprites)
+    {
+        return spriteRenderer.Add<Animation>().Init((s) => { spriteRenderer.sprite = s; }, sprites);
     }
 
     /*public static Font Init(string name)
