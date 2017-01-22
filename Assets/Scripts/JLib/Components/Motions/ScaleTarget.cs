@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class ScaleTarget : VectorTarget
+public class ScaleTarget : VectorTargetBase
 {
-    public virtual ScaleTarget Init(Vector3 target, float speed, Vector3? axes = null, bool eased = true, float drift = 0)
+    public virtual ScaleTarget Init(Vector3 target, int? time = null, Vector3? axes = null, EaseType? eased = null)
     {
-        base.Init(this.GetScale, this.SetScale, target, speed, axes, eased, drift);
+        base.Init(
+            () => { return this.GetScale(); },
+            (v) => { this.SetScale(v); }, 
+            target, time, axes, eased);
         return this;
     }
 

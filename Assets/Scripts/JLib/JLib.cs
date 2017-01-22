@@ -11,31 +11,31 @@ public static class JLib
     
 
     // -- Constants --
-    public readonly static Vector3 AxesAll = Vector3.one;
-    public readonly static Vector3 Axes2D = new Vector3(1, 1, 0);
+    public readonly static Vector4 AxesAll = Vector4.one;
+    public readonly static Vector4 Axes2D = new Vector4(1, 1, 0, 0);
 
     // -- Axes --
 
-    public static Vector3 Axes(bool x, bool y, bool z)
+    public static Vector4 Axes(bool x, bool y, bool z, bool w = false)
     {
-        return new Vector3(x ? 1 : 0, y ? 1 : 0, z ? 1 : 0);
+        return new Vector4(x ? 1 : 0, y ? 1 : 0, z ? 1 : 0, w ? 1 : 0);
     }
 
     /// <summary>
     /// Rounds each float to 0 or 1 from 0 or not-zero.
     /// Sets null to all
     /// </summary>
-    public static Vector3 ReduceToAxes(Vector3? v)
+    public static Vector4 ReduceToAxes(Vector4? v)
     {
         if (!v.HasValue)
             return AxesAll;
-        return new Vector3(v.Value.x < .0001 ? 0 : 1, v.Value.y < .0001 ? 0 : 1, v.Value.z < .0001 ? 0 : 1);
+        return new Vector4(v.Value.x < .0001 ? 0 : 1, v.Value.y < .0001 ? 0 : 1, v.Value.z < .0001 ? 0 : 1, v.Value.w < .0001 ? 0 : 1);
     }
 
     // -- JBehaviour --
 
     public static T New<T>(string name = "New GameObject") 
-        where T : MonoBehaviour
+        where T : Component
     {
         var component = new GameObject().AddComponent<T>();
         component.Add<JName>().SetBaseName(name);

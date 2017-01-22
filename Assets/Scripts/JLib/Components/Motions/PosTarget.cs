@@ -1,19 +1,23 @@
 using System;
 using UnityEngine;
 
-public class PosTarget : VectorTarget
+public class PosTarget : VectorTargetBase
 {
-    public virtual PosTarget Init(Vector3 target, float speed, bool proportional = false, bool local = true, 
-        Vector3? axes = null, bool eased = true, float drift = 0)
+    private bool _proportional = false;
+    private bool _local = true;
+
+    public virtual PosTarget Init(Vector3? target = null, int? time = null, bool? proportional = null, bool? local = null, 
+        Vector3? axes = null, EaseType? eased = null)
     {
+        _proportional = proportional ?? _proportional;
+        _local = local ?? _local;
         base.Init(
-            () => this.GetPos(proportional, local),
-            (v) => this.SetPos(v, proportional, local),
+            () => this.GetPos(_proportional, _local),
+            (v) => this.SetPos(v, _proportional, _local),
             target,
-            speed,
+            time,
             axes,
-            eased,
-            drift);
+            eased);
 
         return this;
     }

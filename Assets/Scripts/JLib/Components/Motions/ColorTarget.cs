@@ -1,18 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
-public class ColorTarget : Motion
+public class ColorTarget : VectorTargetBase
 {
-    private UnityAction<Color> _setColor;
-    public ColorTarget Init(Color target, float speed)
+
+    public ColorTarget Init(Color target, int? time = null, Color? colorAxes = null, EaseType? easing = null)
     {
+        base.Init(null, null, target, time, colorAxes, easing);
+
         if (this.Get<SpriteRenderer>()) {
-            _setColor = (Color color) => { this.Get<SpriteRenderer>().color = color; };
+            _setVector = (color) => { this.Get<SpriteRenderer>().color = color; };
+            _getVector = () => { return this.Get<SpriteRenderer>().color; };
         } else if (this.Get<Image>()) {
-            _setColor = (Color color) => { this.Get<Image>().color = color; };
+            _setVector = (color) => { this.Get<Image>().color = color; };
+            _getVector = () => { return this.Get<Image>().color; };
         } else if (this.Get<Text>()) {
-            _setColor = (Color color) => { this.Get<Text>().color = color; };
+            _setVector = (color) => { this.Get<Text>().color = color; };
+            _getVector = () => { return this.Get<Text>().color; };
         } else {
             Debug.LogError("ColorTarget: _setColor not initialized");
             Debug.Break();
@@ -21,10 +26,8 @@ public class ColorTarget : Motion
         return this;
     }
 
-    void Update()
+    public override void Update()
     {
-        if (ActiveFrame) {
-
-        }
+        base.Update();
     }
 }
