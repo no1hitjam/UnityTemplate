@@ -38,7 +38,7 @@ public static class JLib
         where T : Component
     {
         var component = new GameObject().AddComponent<T>();
-        component.Add<JName>().SetBaseName(name);
+        component.Add<ID>().SetBaseName(name);
         return component;
     }
 
@@ -55,6 +55,10 @@ public static class JLib
             action(i);
         }
     }
-
 }
 
+
+public interface Copyable<T>
+{
+    T Copy(T from);
+}

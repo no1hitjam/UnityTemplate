@@ -1,24 +1,43 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
 
-public class Motion : MonoBehaviour
+public abstract class Motion : MonoBehaviour
 {
-    public int FrameCount = -1;
     public int FrameDelay = 0;
+
+    protected abstract void OnInvoked();
+    protected abstract void Wait();
+
+    protected void Init(UnityEvent invoker = null)
+    {
+        if (invoker != null) {
+            invoker.AddListener(OnInvoked);
+            Wait();
+        }
+    } 
 
     public bool ActiveFrame
     {
         get
         {
-            if (FrameCount > 0)
-                FrameCount--;
             if (FrameDelay > 0)
                 FrameDelay--;
-            return FrameCount != 0 && FrameDelay <= 0;
+            return FrameDelay <= 0;
         }
     }
 
-    public void ResetCount()
+    public static T[] InvokeChain<T>(Func<T, UnityEvent> invoker, params T[] motions)
+        where T : Motion
     {
-        FrameCount = -1;
+        JLib.For(1, motions.Length - 1, (i) =>
+        {
+            motions[i].Init(invoker(motions[i - 1]));
+        });
+        motions[0].Init(invoker(motions[motions.Length - 1]));
+        motions[0].OnInvoked();
+        return motions;
     }
+    
 }

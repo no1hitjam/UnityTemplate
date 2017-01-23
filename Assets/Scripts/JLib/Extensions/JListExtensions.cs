@@ -24,7 +24,7 @@ public static class JListExtensions
         JLib.For(count, (_) =>
         {
             list.Add(constructor(list.Count));
-            list.Get(-1).GetOrAdd<JName>().SetListIndex(list.Count - 1);
+            list.Get(-1).GetOrAdd<ID>().SetListIndex(list.Count - 1);
         });
         return list;
     }

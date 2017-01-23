@@ -25,6 +25,12 @@ public static class JComponentExtensions
         return component.Add<T>();
     }
 
+    public static T Copy<T>(this Component component, T copy)
+        where T : MonoBehaviour, Copyable<T>
+    {
+        return component.Add<T>().Copy(copy);
+    }
+
     public static Vector3 GetPos(this Component component, bool proportional = false, bool local = true)
     {
         Vector3 returnPos;

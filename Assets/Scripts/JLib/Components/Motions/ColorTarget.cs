@@ -1,13 +1,15 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
-public class ColorTarget : VectorTargetBase
+public class ColorTarget : VectorTargetBase, Copyable<ColorTarget>
 {
-
-    public ColorTarget Init(Color target, int? time = null, Color? colorAxes = null, EaseType? easing = null)
+    
+    public ColorTarget Init(Color target, int? time = null, Color? colorAxes = null, EaseType? easing = null, 
+        UnityEvent invoker = null)
     {
-        base.Init(null, null, target, time, colorAxes, easing);
+        base.Init(null, null, target, time, colorAxes, easing, invoker);
 
         if (this.Get<SpriteRenderer>()) {
             _setVector = (color) => { this.Get<SpriteRenderer>().color = color; };
@@ -26,8 +28,19 @@ public class ColorTarget : VectorTargetBase
         return this;
     }
 
+    public ColorTarget Copy(ColorTarget from)
+    {
+        return Init(from._target, from._maxTime, from._axes, from._easing, null);
+    }
+
     public override void Update()
     {
         base.Update();
     }
+
+    protected override void OnInvoked()
+    {
+        Init();
+    }
+
 }

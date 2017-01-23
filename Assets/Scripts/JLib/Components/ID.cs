@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class JName : MonoBehaviour
+public class ID : MonoBehaviour
 {
-    private string _baseName = "";
+    private string _name = "";
     private int? _listIndex = null;
 
     public void SetBaseName(string baseName)
     {
-        this._baseName = baseName;
+        this._name = baseName;
         DisplayName();
     }
 
@@ -20,7 +20,7 @@ public class JName : MonoBehaviour
 
     private void DisplayName()
     {
-        name = _baseName;
+        name = _name;
         if (_listIndex.HasValue) {
             name += " " + _listIndex;
         }
