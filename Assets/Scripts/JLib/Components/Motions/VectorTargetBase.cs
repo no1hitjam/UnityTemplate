@@ -63,10 +63,9 @@ public abstract class VectorTargetBase : Motion
         _axes = axes ?? _axes;
         _easing = easing ?? _easing;
 
+        _time = -1;
         if (invoker == null) {
             _time = 0;
-        } else {
-            _time = -1;
         }
 
         return this;

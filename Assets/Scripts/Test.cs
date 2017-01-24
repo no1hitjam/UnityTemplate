@@ -2,22 +2,23 @@
 using UnityEngine;
 using UnityEditor;
 
-public class Test : MonoBehaviour
+public class Test : StateBehaviour<Test.S>
 {
+    public enum S { TestState };
+
     void Awake()
     {
+        /*Init(new Dictionary<S, StateFunctions>
+        {
+            { S.TestState, new StateFunctions { } }
+        });*/
+
         var test_renderers = new List<SpriteRenderer>().AddComponents(4, (i) =>
         {
             var r = JLib.New<SpriteRenderer>("PosTarget Test").Init(null, AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd"));
             r.transform.localPosition = new Vector3(0, -i * 1);
             return r;
         });
-
-        //var posTarget0_0 = test_renderers[0].Add<PosTarget>().Init(new Vector3(1, 0, 0), 120, axes: new Vector3(1, 0, 0), eased: EaseType.None);
-        //var posTarget0_1 = test_renderers[0].Add<PosTarget>().Init(new Vector3(0, 0, 0), 120, axes: new Vector3(1, 0, 0), eased: EaseType.None, invoker: posTarget0_0.OnEnd);
-        //posTarget0_1.OnEnd.AddListener(() => { posTarget0_0.Init(); });
-        //var posTarget0_1 = test_renderers[0].Add<PosTarget>().Copy(posTarget0_0).Init(new Vector3(0, 0, 0), invoker: posTarget0_0.OnEnd);
-        //posTarget0_1.OnEnd.AddListener(() => { posTarget0_0.Init(); });
 
         var posTarget0 = test_renderers[0].Add<PosTarget>().Init(new Vector3(1, 0, 0), 120, axes: new Vector3(1, 0, 0), eased: EaseType.None);
         Motion.InvokeChain((m) => m.OnEnd,
@@ -38,5 +39,10 @@ public class Test : MonoBehaviour
 
         var posTarget3 = test_renderers[3].Add<PosTarget>().Init(new Vector3(1, 0, 0), 120, axes: new Vector3(1, 0, 0), eased: EaseType.Both);
         Motion.InvokeChain((m) => m.OnEnd, posTarget3, test_renderers[3].Copy(posTarget3).Init(Vector3.zero));
+    }
+
+    public override void Update()
+    {
+        base.Update();
     }
 }
